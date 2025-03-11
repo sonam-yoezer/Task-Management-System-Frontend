@@ -1,0 +1,63 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#EAEFF5] to-[#C7D3E3] px-4">
+  <div class="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md border border-gray-200">
+    <!-- Header with Modern Styling -->
+    <h2 class="text-center text-2xl font-extrabold text-[#1B355E]">Sign Up</h2>
+    <p class="text-gray-500 text-sm text-center mt-2">Create your account</p>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate class="mt-8 space-y-5">
+
+      <!-- Name Fields -->
+      <div class="flex gap-4">
+        <div class="flex-1">
+          <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+          <input id="firstName" formControlName="firstName" type="text"
+            class="w-full px-4 py-2 border border-[#1B355E] rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#F1B434] focus:border-[#F1B434] bg-gray-50 text-gray-700"
+            placeholder="Enter your first name">
+        </div>
+        <div class="flex-1">
+          <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+          <input id="lastName" formControlName="lastName" type="text"
+            class="w-full px-4 py-2 border border-[#1B355E] rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#F1B434] focus:border-[#F1B434] bg-gray-50 text-gray-700"
+            placeholder="Enter your last name">
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input id="email" formControlName="email" type="email"
+          class="w-full px-4 py-2 border border-[#1B355E] rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#F1B434] focus:border-[#F1B434] bg-gray-50 text-gray-700"
+          placeholder="Enter your email">
+      </div>
+
+      <!-- Password Fields -->
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input id="password" formControlName="password" type="password"
+          class="w-full px-4 py-2 border border-[#1B355E] rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#F1B434] focus:border-[#F1B434] bg-gray-50 text-gray-700"
+          placeholder="Enter your password">
+      </div>
+
+      <div>
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+        <input id="confirmPassword" formControlName="confirmPassword" type="password"
+          class="w-full px-4 py-2 border border-[#1B355E] rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#F1B434] focus:border-[#F1B434] bg-gray-50 text-gray-700"
+          placeholder="Confirm your password">
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="w-full bg-[#1B355E] text-white py-3 rounded-lg text-sm font-semibold transform transition-all duration-300 hover:bg-[#14294B] hover:scale-105 focus:ring-2 focus:ring-[#F1B434]">
+        Sign Up
+      </button>
+    </form>
+
+    <!-- Footer Links -->
+    <div class="text-center mt-4">
+      <p class="text-sm text-gray-600">
+        Already have an account?
+        <a routerLink="/login" class="text-[#1B355E] hover:underline font-semibold">Log In</a>
+      </p>
+    </div>
+  </div>
+</div>
