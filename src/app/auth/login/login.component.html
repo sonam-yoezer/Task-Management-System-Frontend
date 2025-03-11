@@ -1,0 +1,62 @@
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#EAEFF5] to-[#C7D3E3] px-4">
+  <div
+    class="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md transform transition-all duration-500 hover:scale-105 border border-gray-200">
+    <!-- Header with Modern Styling -->
+    <h2 class="text-center text-2xl font-extrabold text-[#1B355E]">Log In</h2>
+    <p class="text-gray-500 text-sm text-center mt-2">Access your account securely</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate class="mt-8 space-y-5">
+
+      <!-- Email Field -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input id="email" formControlName="email" type="email"
+          class="w-full px-4 py-2 border border-[#1B355E] rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#F1B434] focus:border-[#F1B434] bg-gray-50 text-gray-700"
+          placeholder="Enter your email">
+        <div *ngIf="submitted && f['email'].errors" class="text-xs text-red-500 mt-1">
+          <small *ngIf="f['email'].errors['required']">Email is required</small>
+          <small *ngIf="f['email'].errors['email']">Invalid email format</small>
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input id="password" formControlName="password" type="password"
+          class="w-full px-4 py-2 border border-[#1B355E] rounded-lg text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#F1B434] focus:border-[#F1B434] bg-gray-50 text-gray-700"
+          placeholder="Enter your password">
+        <div *ngIf="submitted && f['password'].errors" class="text-xs text-red-500 mt-1">
+          <small *ngIf="f['password'].errors['required']">Password is required</small>
+          <small *ngIf="f['password'].errors['minlength']">Password too short</small>
+        </div>
+      </div>
+
+      <!-- Forgot Password Link -->
+      <div class="flex justify-end">
+        <a routerLink="/forgot-password" class="text-sm text-[#1B355E] hover:underline">
+          Forgot Password?
+        </a>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit"
+        class="w-full bg-[#1B355E] text-white py-3 rounded-lg text-sm font-semibold transform transition-all duration-300 hover:bg-[#14294B] hover:scale-105 focus:ring-2 focus:ring-[#F1B434]">
+        Log In
+      </button>
+    </form>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="mt-4 text-sm text-red-500 text-center">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Footer Links -->
+    <div class="text-center mt-4">
+      <p class="text-sm text-gray-600">
+        Don't have an account?
+        <a routerLink="/signup" class="text-[#1B355E] hover:underline font-semibold">Sign Up</a>
+      </p>
+    </div>
+  </div>
+  
+</div>
