@@ -1,0 +1,73 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+    <div class="p-8">
+      <!-- Header -->
+      <h2 class="text-3xl font-bold text-[#1B355E] mb-8 tracking-tight">Profile Settings</h2>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="flex justify-center items-center py-12">
+        <div class="w-16 h-16 border-4 border-t-4 border-[#1B355E] border-opacity-70 rounded-full animate-spin"></div>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="!loading && error" class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
+        <p class="font-medium">{{ error }}</p>
+      </div>
+
+      <!-- User Information -->
+      <div *ngIf="!loading && userInfo" class="space-y-8">
+        <!-- Profile Header with Initial Avatar -->
+        <div class="flex items-center space-x-6 pb-8 border-b border-gray-200">
+          <!-- Circular Avatar with Initial -->
+          <div *ngIf="userInfo.firstName && userInfo.firstName.length > 0"
+            class="w-24 h-24 rounded-full bg-[#1B355E] flex items-center justify-center text-white text-4xl font-bold border-4 border-[#1B355E] shadow-md transition-transform hover:scale-105">
+            {{ userInfo.firstName.charAt(0).toUpperCase() }}
+          </div>
+          <!-- Fallback Placeholder Image -->
+          <img *ngIf="!userInfo.firstName || userInfo.firstName.length === 0" src="https://picsum.photos/80/80"
+            alt="User Avatar"
+            class="w-24 h-24 rounded-full object-cover border-4 border-[#1B355E] shadow-md transition-transform hover:scale-105"
+            onerror="this.src='https://picsum.photos/80/80'">
+          <div class="flex-1">
+            <h3 class="text-2xl font-semibold text-[#1B355E]">{{ userInfo.firstName || 'N/A' }} {{ userInfo.lastName ||
+              '' }}</h3>
+            <p class="text-gray-600 text-lg mt-1">Role: <span class="font-medium text-[#1B355E]">{{ userInfo.role ||
+                'Unknown' }}</span></p>
+          </div>
+        </div>
+
+        <!-- User Details -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Email -->
+          <div class="bg-gray-50 p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <p class="text-[#1B355E] text-lg font-semibold break-words">{{ userInfo.email || 'Not provided' }}</p>
+          </div>
+          <!-- Placeholder for Additional Info (e.g., Role) -->
+          <div class="bg-gray-50 p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+            <p class="text-[#1B355E] text-lg font-semibold">{{ userInfo.role || 'Not assigned' }}</p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end mt-10">
+          <button (click)="openEditDialog(userInfo)"
+            class="bg-[#008000] text-white px-8 py-3 font-semibold rounded-lg shadow-md hover:bg-[#267046] hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+            Edit Profile
+          </button>
+        </div>
+      </div>
+
+      <!-- No Data Fallback -->
+      <div *ngIf="!loading && !userInfo && !error" class="text-center py-12 text-gray-500">
+        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p class="text-lg font-medium">No user information available.</p>
+      </div>
+    </div>
+  </div>
+</div>

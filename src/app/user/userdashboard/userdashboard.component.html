@@ -1,6 +1,62 @@
-<p>userdashboard works!</p>
-<button (click)="logout()" [disabled]="loading"
-  class="flex w-full items-center px-4 py-2 text-sm text-red-700 hover:bg-red-100">
-  <span class="material-icons mr-2">logout</span>
-  {{ loading ? 'Logging out...' : 'Logout' }}
-</button>
+<div class="flex flex-col h-screen">
+    <!-- Navbar -->
+    <div class="flex items-center justify-between bg-gray-800 text-white p-4 shadow-md">
+        <div class="flex items-center space-x-4">
+            <!-- Hamburger Menu Button (visible on small screens) -->
+            <button id="hamburger-btn" (click)="toggleSidebar()" class="md:hidden focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <div class="text-lg font-bold">Task Management</div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <input type="text" placeholder="Search..." class="px-4 py-2 rounded-lg text-black" />
+            <div class="relative">
+                <button id="profile-btn" (click)="toggleProfileMenu($event)"
+                    class="flex items-center space-x-2 focus:outline-none">
+                    <!-- Circular Avatar with First Name Initial -->
+                    <div *ngIf="userInfo?.firstName"
+                        class="w-10 h-10 rounded-full bg-[#1B355E] flex items-center justify-center text-white text-xl font-semibold">
+                        {{ (userInfo?.firstName?.charAt(0) || '').toUpperCase() }}
+                    </div>
+                    <!-- Fallback Placeholder Image -->
+                    <img *ngIf="!userInfo?.firstName" src="" class="w-10 h-10 rounded-full" alt="Profile" />
+                </button>
+                <div #profileMenu id="profile-menu" *ngIf="isProfileMenuOpen"
+                    class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg">
+                    <a class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        routerLink="/user/dashboard/view/user/profile">Profile</a>
+                    <button class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        (click)="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex flex-1">
+        <!-- Sidebar -->
+        <div [ngClass]="{'w-16': !isSidebarOpen, 'w-64': isSidebarOpen}"
+            class="bg-gray-900 text-white p-2 md:p-4 space-y-6 md:w-64 transition-all duration-300">
+            <h2 class="text-xl font-bold hidden md:block">User Dashboard</h2>
+            <nav class="space-y-4">
+                <a class="flex justify-center md:justify-start items-center px-2 md:px-4 py-2 rounded-lg hover:bg-gray-700"
+                    routerLink="/admin/dashboard" routerLinkActive="bg-gray-800"
+                    [routerLinkActiveOptions]="{ exact: true }">
+                    <i class="fas fa-home"></i>
+                    <span [ngClass]="{'hidden': !isSidebarOpen, 'inline ml-2': isSidebarOpen}"
+                        class="md:inline">Home</span>
+                </a>
+                <a class="flex justify-center md:justify-start items-center px-2 md:px-4 py-2 rounded-lg hover:bg-gray-700"
+                    routerLink="/user/dashboard/view/user/profile" routerLinkActive="bg-gray-800">
+                    <i class="fas fa-cog"></i>
+                    <span [ngClass]="{'hidden': !isSidebarOpen, 'inline ml-2': isSidebarOpen}"
+                        class="md:inline">Settings</span>
+                </a>
+            </nav>
+        </div>
+        <!-- Content Area -->
+        <div class="flex-1 p-4">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

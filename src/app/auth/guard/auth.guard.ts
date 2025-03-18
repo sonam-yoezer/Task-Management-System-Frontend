@@ -3,11 +3,10 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   Router,
-  CanActivate,
 
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 
 /**
@@ -18,7 +17,8 @@ import { AuthService } from '../../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
+  private isAuthenticated: boolean | null = null;
 
   /**
    * Creates an instance of AuthGuard.
@@ -41,15 +41,37 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
+    const token = this.authService.getToken();
+    if (!token) {
+      console.log('No token, skipping validation, redirecting to login');
+      this.isAuthenticated = false;
+      this.router.navigate(['/login']);
+      return of(false);
+    }
+
+    // Use cached result if available
+    if (this.isAuthenticated !== null) {
+      console.log('Using cached auth state:', this.isAuthenticated);
+      return of(this.isAuthenticated ? true : (this.router.navigate(['/login']), false));
+    }
+
     return this.authService.validateToken().pipe(
       map(isValid => {
+        this.isAuthenticated = isValid;
+        console.log('Validated token, result:', isValid);
         if (isValid) {
           return true;
         } else {
           this.router.navigate(['/login']);
           return false;
         }
+      }),
+      catchError(() => {
+        this.isAuthenticated = false;
+        this.router.navigate(['/login']);
+        return of(false);
       })
     );
   }
+
 }

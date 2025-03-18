@@ -11,5 +11,5 @@ export interface LoginModel {
  */
 export interface LoginResponseModel {
   accessToken: string;
-  refreshToken?: string;
+  refreshToken: string;
 }

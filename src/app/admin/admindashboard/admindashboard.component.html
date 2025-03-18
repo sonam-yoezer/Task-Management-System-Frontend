@@ -1,6 +1,95 @@
-<p>admindashboard works!</p>
-<button (click)="logout()" [disabled]="loading"
-    class="flex w-full items-center px-4 py-2 text-sm text-red-700 hover:bg-red-100">
-    <span class="material-icons mr-2">logout</span>
-    {{ loading ? 'Logging out...' : 'Logout' }}
-</button>
+<div class="flex flex-col min-h-screen bg-gray-100">
+    <!-- Navbar -->
+    <header class="fixed top-0 left-0 w-full bg-gray-900 text-white shadow-lg z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <!-- Hamburger Menu -->
+                <button (click)="toggleSidebar()"
+                    class="md:hidden p-2 rounded-md hover:bg-gray-800 focus:outline-none transition-colors duration-200">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <!-- Brand -->
+                <div class="text-lg font-bold flex items-center">
+                    <i class="fas fa-tasks text-blue-500 mr-2"></i>
+                    Task Management
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <!-- Search -->
+                <div class="relative hidden md:block">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <input type="text" placeholder="Search..."
+                        class="pl-10 pr-4 py-2 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200" />
+                </div>
+                <!-- Profile -->
+                <div class="relative">
+                    <button (click)="toggleProfileMenu($event)"
+                        class="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-800 focus:outline-none transition-colors duration-200">
+                        <div *ngIf="userInfo?.firstName"
+                            class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white text-xl font-semibold">
+                            {{ (userInfo?.firstName?.charAt(0) || '').toUpperCase() }}
+                        </div>
+                        <img *ngIf="!userInfo?.firstName" src="assets/placeholder-avatar.png"
+                            class="w-10 h-10 rounded-full" alt="Profile" />
+                    </button>
+                    <div #profileMenu *ngIf="isProfileMenuOpen"
+                        class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-50 animate-dropdown-enter">
+                        <a routerLink="/admin/dashboard/view/profile"
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-200">Profile</a>
+                        <button (click)="logout()"
+                            class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex flex-1 pt-14">
+        <!-- Sidebar -->
+        <aside [ngClass]="{'w-16': !isSidebarOpen, 'w-64': isSidebarOpen}"
+            class="fixed top-14 bottom-0 bg-gray-900 text-white p-4 space-y-6 md:w-64 transition-all duration-300 z-40">
+            <h2 class="text-xl font-semibold hidden md:block">Dashboard</h2>
+            <nav class="space-y-2">
+                <a routerLink="/admin/dashboard" routerLinkActive="bg-gray-800"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <i class="fas fa-home w-6"></i>
+                    <span [ngClass]="{'hidden': !isSidebarOpen, 'ml-3': isSidebarOpen}" class="md:inline">
+                        Home
+                    </span>
+                </a>
+                <a routerLink="/admin/dashboard/tasks" routerLinkActive="bg-gray-800"
+                    class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <i class="fas fa-tasks w-6"></i>
+                    <span [ngClass]="{'hidden': !isSidebarOpen, 'ml-3': isSidebarOpen}" class="md:inline">
+                        Tasks
+                    </span>
+                </a>
+                <a routerLink="/admin/dashboard/view/teams" routerLinkActive="bg-gray-800"
+                    class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <i class="fas fa-users w-6"></i>
+                    <span [ngClass]="{'hidden': !isSidebarOpen, 'ml-3': isSidebarOpen}" class="md:inline">
+                        Teams
+                    </span>
+                </a>
+                <a routerLink="/admin/dashboard/view/profile" routerLinkActive="bg-gray-800"
+                    class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <i class="fas fa-cog w-6"></i>
+                    <span [ngClass]="{'hidden': !isSidebarOpen, 'ml-3': isSidebarOpen}" class="md:inline">
+                        Settings
+                    </span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Content Area -->
+        <main class="flex-1 p-6 ml-0 md:ml-64 transition-all duration-300">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>
