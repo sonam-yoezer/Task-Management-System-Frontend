@@ -1,0 +1,6 @@
+/* Tailwind: Hide sidebar on mobile */
+@media (max-width: 1024px) {
+    .sidebar {
+        display: none;
+    }
+}
