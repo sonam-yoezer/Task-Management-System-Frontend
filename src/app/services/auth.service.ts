@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { LoginModel, LoginResponseModel } from '../models/login.model';
 import { User } from '../models/user.model';
 import { UserService } from './user.service';
+import { isPlatformBrowser } from '@angular/common';
 
 /**
  * Service for handling authentication and authorization logic.
@@ -21,15 +22,23 @@ export class AuthService {
   constructor(
     private apiService: ApiService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: object
   ) { }
+
+  /**
+   * Utility to safely access localStorage.
+   */
+  private safeLocalStorage(): Storage | null {
+    return isPlatformBrowser(this.platformId) ? localStorage : null;
+  }
 
   /**
    * Stores the access token in local storage.
    * @param {string} token - The access token.
    */
   setToken(token: string): void {
-    localStorage.setItem(this.TOKEN_KEY, token);
+    this.safeLocalStorage()?.setItem(this.TOKEN_KEY, token);
   }
 
   /**
@@ -37,7 +46,7 @@ export class AuthService {
    * @returns {string | null} - The refresh token or null if not found.
    */
   setRefreshToken(token: string): void {
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, token);
+    this.safeLocalStorage()?.setItem(this.REFRESH_TOKEN_KEY, token);
   }
 
   /**
@@ -45,7 +54,7 @@ export class AuthService {
    * @param {string} role - The user role.
    */
   setRoles(role: string): void {
-    localStorage.setItem(this.ROLE_KEY, role);
+    this.safeLocalStorage()?.setItem(this.ROLE_KEY, role);
   }
 
   /**
@@ -53,7 +62,7 @@ export class AuthService {
   * @returns {string | null} - The access token or null if not found.
   */
   getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+    return this.safeLocalStorage()?.getItem(this.TOKEN_KEY) || null;
   }
 
   /**
@@ -61,7 +70,7 @@ export class AuthService {
  * @returns {string | null} The stored refresh token, or null if not found.
  */
   getRefreshToken(): string | null {
-    return localStorage.getItem(this.REFRESH_TOKEN_KEY);
+    return this.safeLocalStorage()?.getItem(this.REFRESH_TOKEN_KEY) || null;
   }
 
   /**
@@ -69,29 +78,28 @@ export class AuthService {
    * @returns {string | null} - The user role or null if not found.
    */
   getRoles(): string | null {
-    const role = localStorage.getItem(this.ROLE_KEY);
-    return role;
+    return this.safeLocalStorage()?.getItem(this.ROLE_KEY) || null;
   }
 
   /**
    * Removes the stored user role from local storage.
    */
   removeRoles(): void {
-    localStorage.removeItem(this.ROLE_KEY);
+    this.safeLocalStorage()?.removeItem(this.ROLE_KEY);
   }
 
   /**
    * Removes the access token from local storage.
    */
   removeToken(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    this.safeLocalStorage()?.removeItem(this.TOKEN_KEY);
   }
 
   /**
    * Removes the refresh token from local storage.
    */
   removeRefreshToken(): void {
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
+    this.safeLocalStorage()?.removeItem(this.REFRESH_TOKEN_KEY);
   }
 
   /**
