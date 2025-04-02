@@ -121,11 +121,11 @@ export class EditTeamsDetailsComponent implements OnInit {
 
     this.apiService.put(`/user/${this.data.id}`, usersData, { headers }).subscribe({
       next: () => {
-        this.toastr.success('customer updated successfully');
+        this.toastr.success('worker updated successfully');
         this.dialogRef.close(true);
       },
       error: (error) => {
-        this.toastr.error(error.error?.message || 'Failed to update theatre');
+        this.toastr.error(error.error?.message || 'Failed to update worker');
       }
     });
   }
