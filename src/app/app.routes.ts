@@ -10,6 +10,7 @@ import { ViewUserProfileComponent } from './user/profile/view-user-profile/view-
 import { EditUserProfileComponent } from './user/profile/edit-user-profile/edit-user-profile.component';
 import { ViewTeamsDetailsComponent } from './admin/teams/view-teams-details/view-teams-details.component';
 import { EditTeamsDetailsComponent } from './admin/teams/edit-teams-details/edit-teams-details.component';
+import { ViewWorkComponent } from './admin/works/view-work/view-work.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -56,7 +57,17 @@ export const routes: Routes = [
                         component: EditTeamsDetailsComponent
                     },
                 ]
-            }
+            },
+            {
+                path: 'view/work',
+                component: ViewWorkComponent,
+                children: [
+                    {
+                        path: 'edit',
+                        component: EditProfileComponent
+                    },
+                ]
+            },
         ],
     },
 
