@@ -11,6 +11,7 @@ import { EditUserProfileComponent } from './user/profile/edit-user-profile/edit-
 import { ViewTeamsDetailsComponent } from './admin/teams/view-teams-details/view-teams-details.component';
 import { EditTeamsDetailsComponent } from './admin/teams/edit-teams-details/edit-teams-details.component';
 import { ViewWorkComponent } from './admin/works/view-work/view-work.component';
+import { ViewTaskComponent } from './admin/assigntask/view-task/view-task.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -68,6 +69,10 @@ export const routes: Routes = [
                     },
                 ]
             },
+            {
+                path: 'view/assign/task',
+                component: ViewTaskComponent
+            }
         ],
     },
 

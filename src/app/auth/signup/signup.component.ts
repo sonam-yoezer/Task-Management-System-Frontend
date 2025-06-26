@@ -88,7 +88,7 @@ export class SignupComponent {
       email: this.signupForm.value.email,
       password: this.signupForm.value.password,
       firstName: this.signupForm.value.firstName,
-      lastName: this.signupForm.value.firstName,
+      lastName: this.signupForm.value.lastName,
     };
 
     this.signupService.signup(signupData).subscribe({

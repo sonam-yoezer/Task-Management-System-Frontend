@@ -1,0 +1,90 @@
+<div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 animate-overlay-enter"
+    (click)="onCancel($event)">
+    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 transform animate-dialog-enter"
+        (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-plus-circle text-green-600 mr-2"></i>
+                Assign Task
+            </h2>
+            <button (click)="onCancel()"
+                class="text-gray-500 hover:text-red-600 transition-colors duration-200 p-1 rounded-full hover:bg-gray-100">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+            <!-- Select User -->
+            <div class="relative animate-fade-in">
+                <label for="userId" class="block text-sm font-medium text-gray-700 mb-1">Select User</label>
+                <select id="userId" formControlName="userId"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                    <option value="" disabled>Select a user</option>
+                    <option *ngFor="let user of users" [value]="user.id">
+                        {{ user.fullName }} ({{ user.email }})
+                    </option>
+                </select>
+                <div *ngIf="submitted && f['userId'].errors" class="absolute text-red-500 text-xs mt-1">
+                    <span *ngIf="f['userId'].errors['required']">User is required</span>
+                </div>
+            </div>
+
+            <!-- Select Work -->
+            <div class="relative animate-fade-in">
+                <label for="workId" class="block text-sm font-medium text-gray-700 mb-1">Select Work</label>
+                <select id="workId" formControlName="workId"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                    <option value="" disabled>Select a work</option>
+                    <option *ngFor="let work of works" [value]="work.id">
+                        {{ work.workName }}
+                    </option>
+                </select>
+                <div *ngIf="submitted && f['workId'].errors" class="absolute text-red-500 text-xs mt-1">
+                    <span *ngIf="f['workId'].errors['required']">Work is required</span>
+                </div>
+            </div>
+
+            <!-- Deadline -->
+            <div class="relative animate-fade-in">
+                <label for="dateline" class="block text-sm font-medium text-gray-700 mb-1">Dateline</label>
+                <input type="date" id="dateline" formControlName="dateline"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" />
+                <div *ngIf="submitted && f['dateline']?.errors" class="absolute text-red-500 text-xs mt-1">
+                    <span *ngIf="f['dateline']?.errors?.['required']">Dateline is required</span>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="relative animate-fade-in" style="animation-delay: 200ms;">
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+                    Description
+                </label>
+                <textarea id="description" formControlName="description"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                    placeholder="Enter work description"></textarea>
+                <div *ngIf="submitted && f['description'].errors" class="absolute text-red-500 text-xs mt-1">
+                    <span *ngIf="f['description'].errors['required']">Description is required</span>
+                </div>
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="flex justify-end space-x-3 mt-8">
+                <button type="button" (click)="onCancel()"
+                    class="px-5 py-2 bg-gray-100 text-gray-700 rounded-lg shadow-sm hover:bg-gray-200 transition-all duration-200">
+                    Cancel
+                </button>
+                <button type="submit"
+                    class="px-5 py-2 bg-green-600 text-white rounded-lg shadow-sm hover:bg-green-700 transition-all duration-200 flex items-center"
+                    [disabled]="taskForm.invalid">
+                    <i class="fas fa-save mr-2"></i>
+                    Assign Task
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
