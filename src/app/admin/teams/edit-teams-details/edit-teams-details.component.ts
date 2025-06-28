@@ -119,7 +119,7 @@ export class EditTeamsDetailsComponent implements OnInit {
       'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     };
 
-    this.apiService.put(`/user/${this.data.id}`, usersData, { headers }).subscribe({
+    this.apiService.put(`/api/user/updateUser/${this.data.id}`, usersData, { headers }).subscribe({
       next: () => {
         this.toastr.success('worker updated successfully');
         this.dialogRef.close(true);

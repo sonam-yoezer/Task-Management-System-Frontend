@@ -46,6 +46,13 @@
                     <span [ngClass]="{'hidden': !isSidebarOpen, 'inline ml-2': isSidebarOpen}"
                         class="md:inline">Home</span>
                 </a>
+                <a routerLink="/user/dashboard/view/user/task" routerLinkActive="bg-gray-800"
+                    class="flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+                    <i class="fas fa-tasks w-6"></i>
+                    <span [ngClass]="{'hidden': !isSidebarOpen, 'ml-3': isSidebarOpen}" class="md:inline">
+                        Tasks Assigned
+                    </span>
+                </a>
                 <a class="flex justify-center md:justify-start items-center px-2 md:px-4 py-2 rounded-lg hover:bg-gray-700"
                     routerLink="/user/dashboard/view/user/profile" routerLinkActive="bg-gray-800">
                     <i class="fas fa-cog"></i>
@@ -59,4 +66,5 @@
             <router-outlet></router-outlet>
         </div>
     </div>
+    
 </div>

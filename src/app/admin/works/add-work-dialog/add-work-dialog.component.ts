@@ -66,7 +66,7 @@ export class AddWorkDialogComponent {
         'Authorization': `Bearer ${token}`
       };
 
-      this.apiService.post('/work', this.workForm.value, { headers })
+      this.apiService.post('/api/work/addWork', this.workForm.value, { headers })
         .subscribe({
           next: () => {  // Removed unused 'response' parameter
             this.loading = false;

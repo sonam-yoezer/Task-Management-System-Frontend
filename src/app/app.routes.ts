@@ -12,6 +12,7 @@ import { ViewTeamsDetailsComponent } from './admin/teams/view-teams-details/view
 import { EditTeamsDetailsComponent } from './admin/teams/edit-teams-details/edit-teams-details.component';
 import { ViewWorkComponent } from './admin/works/view-work/view-work.component';
 import { ViewTaskComponent } from './admin/assigntask/view-task/view-task.component';
+import { ViewAssignedTaskComponent } from './user/task/view-assigned-task/view-assigned-task.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -31,6 +32,10 @@ export const routes: Routes = [
                         component: EditUserProfileComponent
                     },
                 ]
+            },
+             {
+                path: 'view/user/task',
+                component: ViewAssignedTaskComponent,
             }
         ]
     },

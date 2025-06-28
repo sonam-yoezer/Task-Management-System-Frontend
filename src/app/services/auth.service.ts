@@ -107,7 +107,7 @@ export class AuthService {
  * @returns {Observable<boolean>} - Observable indicating whether the token is valid.
  */
   validateToken(): Observable<boolean> {
-    return this.apiService.get('/auth/self').pipe(
+    return this.apiService.get('/api/auth/self').pipe(
       map(() => true),
       catchError(() => {
         console.warn('Token validation failed.');
@@ -122,7 +122,7 @@ export class AuthService {
   * @returns {Observable<LoginResponseModel>} - Observable containing authentication tokens.
   */
   login(loginData: LoginModel): Observable<LoginResponseModel> {
-    return this.apiService.post<LoginResponseModel>('/auth/login', loginData).pipe(
+    return this.apiService.post<LoginResponseModel>('/api/auth/login', loginData).pipe(
       tap((response: any) => {
         if (!response.access_token) {
           throw new Error('Invalid login response: missing access_token');
@@ -150,7 +150,7 @@ export class AuthService {
   * @returns {Observable<User>} - Observable containing the user details.
   */
   getCurrentUser(): Observable<User> {
-    return this.apiService.get<any>('/auth/self').pipe(
+    return this.apiService.get<any>('/api/auth/self').pipe(
       map((response: any) => {
         const user: User = response.data?.user || response.user || response;
         if (!user) {
@@ -178,7 +178,7 @@ export class AuthService {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    return this.apiService.post<LoginResponseModel>('/auth/refresh', null, {
+    return this.apiService.post<LoginResponseModel>('/api/auth/refresh', null, {
       headers: { 'Authorization': `Bearer ${refreshToken}` }
     }).pipe(
       tap((response: any) => {

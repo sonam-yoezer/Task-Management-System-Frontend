@@ -98,7 +98,7 @@ export class ViewWorkComponent implements OnInit {
       'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     };
 
-    this.apiService.get<Work[]>('/work', { headers, observe: 'response' }).subscribe({
+    this.apiService.get<Work[]>('/api/work/getAllWork', { headers, observe: 'response' }).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.Response) {
           const response = event as HttpResponse<Work[]>;
@@ -174,7 +174,7 @@ export class ViewWorkComponent implements OnInit {
         };
 
         // Specify responseType as text
-        this.apiService.delete(`/work/${work.id}`, {
+        this.apiService.delete(`/api/work/deleteWork/${work.id}`, {
           headers,
           responseType: 'text'
         }).subscribe({

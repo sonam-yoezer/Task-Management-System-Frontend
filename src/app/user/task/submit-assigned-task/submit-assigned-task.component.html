@@ -1,0 +1,24 @@
+<div class="p-6">
+  <h2 class="text-xl font-semibold mb-4">Submit Task</h2>
+
+  <form (ngSubmit)="submitAssignedTask()" #taskForm="ngForm" enctype="multipart/form-data">
+    <div class="mb-4">
+      <label class="block mb-2 font-medium">Remarks:</label>
+      <textarea [(ngModel)]="remarks" name="remarks" required
+        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    </div>
+
+    <div class="mb-4">
+      <label class="block mb-2 font-medium">File:</label>
+      <input type="file" (change)="onFileSelected($event)" required
+        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div class="flex justify-end space-x-4">
+      <button type="button" (click)="dialogRef.close()"
+        class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400">Cancel</button>
+      <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Submit</button>
+    </div>
+  </form>
+
+</div>
