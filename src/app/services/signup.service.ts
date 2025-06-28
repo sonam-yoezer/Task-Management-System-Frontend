@@ -19,6 +19,6 @@ export class SignupService {
    * @returns {Observable<any>} An observable of the server response.
    */
   signup(signupData: SignupModel): Observable<any> {
-    return this.apiService.post('/auth/signup', signupData);
+    return this.apiService.post('api/auth/signup', signupData);
   }
 }

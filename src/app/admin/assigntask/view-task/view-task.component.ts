@@ -8,6 +8,7 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
 import { FormsModule } from '@angular/forms';
 import { Task } from 'zone.js/lib/zone-impl';
+import { ViewTaskByIdComponent } from '../view-task-by-id/view-task-by-id.component';
 
 /**
  * Interface representing the structure of a task assignment.
@@ -154,6 +155,31 @@ export class ViewTaskComponent implements OnInit {
         // Refresh the theatres list after adding
         this.fetchTasks();
         this.toastr.success('Task added successfully');
+      }
+    });
+  }
+
+  /**
+ * Opens a dialog to view the details of a specific task by its ID.
+ * 
+ * Process:
+ * - Opens the `ViewTaskByIdComponent` in a modal dialog.
+ * - Passes the selected task ID as dialog data for detailed viewing.
+ * - After the dialog is closed, optionally refreshes the task list if changes were made.
+ * 
+ * @param {string} taskId - The ID of the task to be viewed.
+ */
+  viewTask(taskId: string) {
+    const dialogRef = this.dialog.open(ViewTaskByIdComponent, {
+      width: '600px',
+      disableClose: true,
+      data: { id: taskId } // Pass the assignment ID to the dialog
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Optionally refresh the task list if changes were made
+        this.fetchTasks();
       }
     });
   }

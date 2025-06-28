@@ -84,7 +84,7 @@ export class EditWorkDialogComponent implements OnInit {
       'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     };
 
-    this.apiService.put(`/work/${this.data.id}`, usersData, { headers }).subscribe({
+    this.apiService.put(`/api/work/updateWork/${this.data.id}`, usersData, { headers }).subscribe({
       next: () => {
         this.toastr.success('Work updated successfully');
         this.dialogRef.close(true);

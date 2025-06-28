@@ -121,7 +121,7 @@ export class ViewProfileComponent implements OnInit {
       'Authorization': `Bearer ${token}`
     };
   
-    this.apiService.get<any>('/auth/self', { headers, observe: 'response' }).subscribe({
+    this.apiService.get<any>('/api/auth/self', { headers, observe: 'response' }).subscribe({
 
       next: (event) => {
         if (event.type === HttpEventType.Response) {

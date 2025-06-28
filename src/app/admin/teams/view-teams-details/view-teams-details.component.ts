@@ -121,7 +121,7 @@ export class ViewTeamsDetailsComponent implements OnInit {
       'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
     };
 
-    this.apiService.get<User[]>('/user', { headers, observe: 'response' }).subscribe({
+    this.apiService.get<User[]>('/api/user/getAllUser', { headers, observe: 'response' }).subscribe({
       next: (event) => {
         if (event.type === HttpEventType.Response) {
           const response = event as HttpResponse<User[]>;
