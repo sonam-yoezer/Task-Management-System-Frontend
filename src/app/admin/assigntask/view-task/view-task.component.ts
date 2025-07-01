@@ -43,6 +43,7 @@ export class ViewTaskComponent implements OnInit {
   error: string | null = null;
   searchTermSubject = new Subject<string>();
   searchTerm: string = '';
+  selectedStatus: string = 'all';
 
   /**
    * Creates an instance of ViewTaskComponent.
@@ -182,6 +183,52 @@ export class ViewTaskComponent implements OnInit {
         this.fetchTasks();
       }
     });
+  }
+
+  fetchTasksByStatus(status: string): void {
+    this.loading = true;
+    this.error = null;
+    this.selectedStatus = status;
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    };
+
+    if (status === 'all') {
+      this.fetchTasks();
+      return;
+    }
+
+    this.apiService.get<Tasks[]>(`/api/assign/getTaskByStatus/${status}`, { headers, observe: 'events' })
+      .subscribe({
+        next: (event) => {
+          if (event.type === HttpEventType.Response) {
+            const tasks = event.body;
+            if (tasks && tasks.length > 0) {
+              this.assignedTasks = tasks;
+              this.filteredAssignedTasks = [...this.assignedTasks];
+              this.error = null;
+            } else {
+              this.assignedTasks = [];
+              this.filteredAssignedTasks = [];
+              this.error = 'No data available for this status';
+            }
+            this.loading = false;
+          }
+        },
+        error: (error) => {
+          this.loading = false;
+          if (error.status === 404 && error.error?.message?.includes('No tasks found')) {
+            this.assignedTasks = [];
+            this.filteredAssignedTasks = [];
+            this.error = 'No data available for this status';
+          } else {
+            this.error = error.message || `Failed to fetch tasks with status: ${status}`;
+            this.toastr.error(this.error ?? 'Unknown error');
+          }
+        }
+      });
   }
 
 }
