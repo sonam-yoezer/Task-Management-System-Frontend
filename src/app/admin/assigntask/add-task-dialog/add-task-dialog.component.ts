@@ -23,6 +23,8 @@ export class AddTaskDialogComponent implements OnInit {
   users: any[] = [];
   works: any[] = [];
 
+  minDate: string = '';
+
   /**
    * Creates an instance of AddTaskDialogComponent.
    * 
@@ -51,6 +53,7 @@ export class AddTaskDialogComponent implements OnInit {
   ngOnInit(): void {
     this.fetchUsers();
     this.fetchWorks();
+    this.setMinDate();
   }
 
   /**
@@ -150,5 +153,37 @@ export class AddTaskDialogComponent implements OnInit {
       this.dialogRef.close();
     }
   }
-  
+
+  /**
+ * Calculates and sets the minimum selectable date for the deadline input field.
+ * 
+ * Logic:
+ * - If the current time is past 5:30 PM, the minimum selectable date is set to tomorrow.
+ * - Otherwise, the minimum selectable date is set to today.
+ * 
+ * The resulting date is formatted as 'YYYY-MM-DD' to comply with the HTML date input format.
+ * 
+ * Purpose:
+ * - To prevent users from selecting past dates.
+ * - To restrict selecting the current date after 5:30 PM.
+ */
+  setMinDate() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+
+    // Block today if it's past 5:30 PM
+    if (hours > 17 || (hours === 17 && minutes >= 30)) {
+      // Minimum selectable date is tomorrow
+      now.setDate(now.getDate() + 1);
+    }
+
+    // Format to 'YYYY-MM-DD'
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Month is zero-based
+    const day = String(now.getDate()).padStart(2, '0');
+
+    this.minDate = `${year}-${month}-${day}`;
+  }
+
 }

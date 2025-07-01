@@ -1,5 +1,6 @@
 <div class="p-6 bg-gray-100 min-h-screen">
   <div class="max-w-7xl mx-auto">
+
     <!-- Header Section -->
     <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div class="flex items-center space-x-4">
@@ -17,6 +18,7 @@
           <i class="fas fa-plus mr-2"></i> Assign Task
         </button>
 
+        <!-- Search Input -->
         <div class="relative flex-1 sm:flex-none">
           <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
             <i class="fas fa-search"></i>
@@ -26,6 +28,25 @@
             class="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-700 transition-all duration-200" />
         </div>
       </div>
+    </div>
+
+    <!-- Status Navigation Bar -->
+    <div class="mb-4 flex flex-wrap gap-2">
+      <button (click)="fetchTasksByStatus('all'); selectedStatus = 'all'" [ngClass]="{
+    'bg-blue-600 text-white': selectedStatus === 'all',
+    'bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white': selectedStatus !== 'all'
+  }" class="px-4 py-2 rounded-lg shadow-sm hover:bg-blue-500 hover:text-white transition-all duration-200">
+        All
+      </button>
+
+      <button
+        *ngFor="let status of ['in-progress', 'completed', 'incomplete', 'approved', 'rejected', 'resubmitted', 'latesubmit']"
+        (click)="fetchTasksByStatus(status); selectedStatus = status" [ngClass]="{
+    'bg-blue-600 text-white': selectedStatus === status,
+    'bg-gray-200 text-gray-800 hover:bg-blue-500 hover:text-white': selectedStatus !== status
+  }" class="px-4 py-2 rounded-lg shadow-sm transition-all duration-200 capitalize">
+        {{ status.replace('-', ' ') }}
+      </button>
     </div>
 
     <!-- Loading State -->
@@ -42,56 +63,47 @@
     </div>
 
     <!-- Assigned Tasks Table -->
-    <div *ngIf="!loading && filteredAssignedTasks.length > 0" class="bg-white rounded-lg shadow-md">
-      <div class="overflow-x-auto">
-        <div class="max-h-[400px] overflow-y-auto">
-          <table class="min-w-full divide-y divide-gray-200">
+    <div *ngIf="!loading && filteredAssignedTasks.length > 0" class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="overflow-x-auto custom-scroll">
+        <div class="max-h-[500px] overflow-y-auto custom-scroll">
+          <table class="min-w-full divide-y divide-gray-200 text-sm">
             <thead class="bg-gray-50 sticky top-0 z-10">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Deadline
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">User Name
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Work Name
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Description
-                </th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions
-                </th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">Deadline</th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">User Name</th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">Email</th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">Role</th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">Work Name</th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">Description</th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                <th class="px-4 py-3 text-left font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-200">
               <tr *ngFor="let task of filteredAssignedTasks" class="hover:bg-gray-50 transition-colors duration-200">
-                <td class="px-6 py-4 whitespace-nowrap text-gray-700">{{ task.dateline | date: 'yyyy-MM-dd' }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-900 font-medium">
-                  {{ task.firstName }} {{ task.lastName }}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-700">{{ task.email }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-700">{{ task.user_role }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-gray-900 font-medium">{{ task.workName }}</td>
-                <td class="px-6 py-4 text-gray-700 max-w-xs break-words">{{ task.description }}</td>
-                <td class="px-6 py-4 whitespace-nowrap">
+                <td class="px-4 py-3 text-gray-700 whitespace-nowrap">{{ task.dateline | date: 'yyyy-MM-dd' }}</td>
+                <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{{ task.firstName }} {{ task.lastName
+                  }}</td>
+                <td class="px-4 py-3 text-gray-700 whitespace-nowrap">{{ task.email }}</td>
+                <td class="px-4 py-3 text-gray-700 whitespace-nowrap">{{ task.user_role }}</td>
+                <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{{ task.workName }}</td>
+                <td class="px-4 py-3 text-gray-700 max-w-sm break-words">{{ task.description }}</td>
+                <td class="px-4 py-3 whitespace-nowrap">
                   <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" [ngClass]="{
-                   'bg-green-100 text-green-800': task?.status === 'completed' || task?.status === 'approved',
-                   'bg-yellow-100 text-yellow-800': task?.status === 'pending' || task?.status === 'resubmitted',
-                   'bg-red-100 text-red-800': task?.status === 'in-progress' || task?.status === 'rejected' || task?.status == 'latesubmit',
-                   'bg-blue-100 text-blue-800': task?.status === 'incomplete'
+                    'bg-green-100 text-green-800': task?.status === 'completed' || task?.status === 'approved',
+                    'bg-yellow-100 text-yellow-800': task?.status === 'pending' || task?.status === 'resubmitted',
+                    'bg-red-100 text-red-800': task?.status === 'in-progress' || task?.status === 'rejected' || task?.status == 'latesubmit',
+                    'bg-blue-100 text-blue-800': task?.status === 'incomplete'
                   }">
                     {{ task.status }}
                   </span>
                 </td>
-                <!-- Actions Column in AssignTaskListComponent -->
-                <td class="px-6 py-4 whitespace-nowrap flex space-x-2">
-                  <!-- View Button -->
+                <td class="px-4 py-3 whitespace-nowrap flex space-x-2">
                   <button (click)="viewTask(task.assignment_id)" class="text-blue-600 hover:text-blue-800"
                     title="View Task">
                     <i class="fas fa-eye"></i>
                   </button>
                 </td>
-
               </tr>
             </tbody>
           </table>
@@ -105,5 +117,4 @@
       <p class="text-gray-500 text-lg">No assigned tasks found</p>
     </div>
   </div>
-
 </div>
