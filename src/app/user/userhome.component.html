@@ -1,0 +1,59 @@
+<div *ngIf="loading" class="flex flex-col items-center justify-center h-screen">
+  <div class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+  <p class="text-lg font-semibold">Loading...</p>
+</div>
+
+<div *ngIf="!loading" class="max-w-7xl mx-auto p-6">
+
+  <h2 class="text-3xl font-bold text-center mb-8">User Dashboard Summary</h2>
+
+  <!-- Summary Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+      <h4 class="text-gray-600 mb-2">Total Tasks</h4>
+      <p class="text-2xl font-bold text-blue-600">{{ totalTasks }}</p>
+    </div>
+    <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+      <h4 class="text-gray-600 mb-2">Completed Tasks</h4>
+      <p class="text-2xl font-bold text-green-600">{{ completedTasks }}</p>
+    </div>
+    <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+      <h4 class="text-gray-600 mb-2">In Progress</h4>
+      <p class="text-2xl font-bold text-yellow-500">{{ inProgressTasks }}</p>
+    </div>
+    <div class="bg-white shadow-lg rounded-2xl p-6 text-center">
+      <h4 class="text-gray-600 mb-2">Overdue Tasks</h4>
+      <p class="text-2xl font-bold text-red-600">{{ overdueTasks }}</p>
+    </div>
+  </div>
+
+  <!-- Upcoming Tasks -->
+  <div class="mb-10">
+    <h3 class="text-2xl font-semibold mb-4">Latest Tasks Assigned to You</h3>
+    <ul *ngIf="upcomingTasks.length > 0; else noUpcoming" class="divide-y divide-gray-200 bg-white rounded-xl shadow">
+      <li *ngFor="let task of upcomingTasks" class="flex justify-between items-center p-4 hover:bg-gray-50">
+        <span class="font-medium">{{ task.workName }}</span>
+        <span class="text-gray-500">{{ task.dateline | date:'medium' }}</span>
+        <span class="text-sm font-semibold text-blue-600 capitalize">{{ task.status }}</span>
+      </li>
+    </ul>
+    <ng-template #noUpcoming>
+      <p class="text-gray-500">No upcoming tasks.</p>
+    </ng-template>
+  </div>
+
+  <!-- Recent Activities -->
+  <div>
+    <h3 class="text-2xl font-semibold mb-4">Recent Activities</h3>
+    <ul *ngIf="recentActivities.length > 0; else noActivities" class="divide-y divide-gray-200 bg-white rounded-xl shadow">
+      <li *ngFor="let activity of recentActivities" class="flex justify-between items-center p-4 hover:bg-gray-50">
+        <span>{{ activity.description }}</span>
+        <span class="text-gray-500">{{ activity.timestamp | date:'medium' }}</span>
+      </li>
+    </ul>
+    <ng-template #noActivities>
+      <p class="text-gray-500">No recent activities.</p>
+    </ng-template>
+  </div>
+
+</div>

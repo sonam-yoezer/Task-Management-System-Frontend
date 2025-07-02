@@ -1,0 +1,61 @@
+<!-- Content Area -->
+<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+  <!-- Dashboard Summary Cards -->
+  <!-- Dashboard Summary Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+      (click)="fetchTasksByStatus('all')">
+      <h3 class="text-gray-500 text-sm mb-2">Total Tasks</h3>
+      <p class="text-3xl font-bold text-gray-900">{{ totalTasks }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+      (click)="fetchTasksByStatus('completed')">
+      <h3 class="text-gray-500 text-sm mb-2">Completed Tasks</h3>
+      <p class="text-3xl font-bold text-green-500">{{ completedTasks }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+      (click)="fetchTasksByStatus('in-progress')">
+      <h3 class="text-gray-500 text-sm mb-2">In Progress</h3>
+      <p class="text-3xl font-bold text-yellow-500">{{ inProgressTasks }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+      (click)="fetchTasksByStatus('incomplete')">
+      <h3 class="text-gray-500 text-sm mb-2">Overdue Tasks</h3>
+      <p class="text-3xl font-bold text-red-500">{{ overdueTasks }}</p>
+    </div>
+  </div>
+
+
+  <!-- Upcoming Deadlines -->
+  <div class="bg-white p-6 rounded-lg shadow mb-10">
+    <h2 class="text-lg font-semibold mb-4">Latest Worked Assigned</h2>
+    <ul class="divide-y divide-gray-200 max-h-60 overflow-y-auto">
+      <li *ngFor="let task of upcomingTasks" class="py-3 flex justify-between items-center">
+        <div class="flex flex-col">
+          <span class="font-medium text-gray-900">{{ task.workName }}</span>
+          <span class="text-gray-500 text-sm">Assigned to: {{ task.firstName }} {{ task.lastName }}</span>
+        </div>
+        <span class="text-gray-700 text-sm">{{ task.dateline | date:'yyyy-MM-dd' }}</span>
+      </li>
+      <li *ngIf="upcomingTasks.length === 0" class="py-3 text-gray-500 text-center">
+        No upcoming deadlines
+      </li>
+    </ul>
+  </div>
+
+  <!-- Recent Activities -->
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-lg font-semibold mb-4">Recent Activities</h2>
+    <ul class="divide-y divide-gray-200 max-h-60 overflow-y-auto">
+      <li *ngFor="let activity of recentActivities" class="py-3 text-gray-700">
+        {{ activity.description }}
+        <span class="block text-sm text-gray-400">{{ activity.timestamp | date:'short' }}</span>
+      </li>
+      <li *ngIf="recentActivities.length === 0" class="py-3 text-gray-500 text-center">
+        No recent activities
+      </li>
+    </ul>
+  </div>
+
+</div>
